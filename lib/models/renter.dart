@@ -8,6 +8,7 @@ class Renter {
     required this.lastReading,
     required this.currentReading,
     required this.miscellaneous,
+    required this.eBRate,
   });
   final String renterId;
   final String name;
@@ -17,4 +18,5 @@ class Renter {
   final String lastReading;
   final String currentReading;
   final String miscellaneous;
+  final String eBRate;
 }

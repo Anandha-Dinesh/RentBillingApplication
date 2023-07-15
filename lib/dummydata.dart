@@ -10,6 +10,7 @@ List<Renter> dummyRenters = [
     lastReading: '50',
     currentReading: '80',
     miscellaneous: '10',
+    eBRate: '5',
   ),
   Renter(
     renterId: '2',
@@ -20,6 +21,7 @@ List<Renter> dummyRenters = [
     lastReading: '100',
     currentReading: '120',
     miscellaneous: '20',
+    eBRate: '7',
   ),
   Renter(
     renterId: '3',
@@ -30,6 +32,7 @@ List<Renter> dummyRenters = [
     lastReading: '80',
     currentReading: '100',
     miscellaneous: '30',
+    eBRate: '8',
   ),
   Renter(
     renterId: '4',
@@ -40,6 +43,7 @@ List<Renter> dummyRenters = [
     lastReading: '40',
     currentReading: '60',
     miscellaneous: '40',
+    eBRate: '5',
   ),
   Renter(
     renterId: '5',
@@ -50,6 +54,7 @@ List<Renter> dummyRenters = [
     lastReading: '90',
     currentReading: '110',
     miscellaneous: '50',
+    eBRate: '6',
   ),
   Renter(
     renterId: '6',
@@ -60,6 +65,7 @@ List<Renter> dummyRenters = [
     lastReading: '70',
     currentReading: '90',
     miscellaneous: '60',
+    eBRate: '5',
   ),
   Renter(
     renterId: '7',
@@ -70,6 +76,7 @@ List<Renter> dummyRenters = [
     lastReading: '35',
     currentReading: '55',
     miscellaneous: '70',
+    eBRate: '7',
   ),
   Renter(
     renterId: '8',
@@ -80,6 +87,7 @@ List<Renter> dummyRenters = [
     lastReading: '85',
     currentReading: '105',
     miscellaneous: '80',
+    eBRate: '5',
   ),
   Renter(
     renterId: '9',
@@ -90,6 +98,7 @@ List<Renter> dummyRenters = [
     lastReading: '50',
     currentReading: '70',
     miscellaneous: '90',
+    eBRate: '8',
   ),
   Renter(
     renterId: '10',
@@ -100,5 +109,6 @@ List<Renter> dummyRenters = [
     lastReading: '75',
     currentReading: '95',
     miscellaneous: '100',
+    eBRate: '5',
   ),
 ];

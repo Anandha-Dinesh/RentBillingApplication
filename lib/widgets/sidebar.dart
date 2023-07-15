@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:rentbillingapp/dummydata.dart';
 import './sidebar_item.dart';
+import '../pages/Configs.dart';
 
 class Sidebar extends StatelessWidget {
   const Sidebar({super.key});
@@ -64,9 +64,12 @@ class Sidebar extends StatelessWidget {
                   horizontalTitleGap: 5,
                   minVerticalPadding: 0,
                   title: SidebarItem(
-                    title: 'Configurations',
+                    title: 'Manage People',
                     onTap: () {
-                      handleMenuItemTap(context, 'Lets Configure Settings');
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Configuration()));
                     },
                   ),
                 ),
@@ -84,101 +87,3 @@ class Sidebar extends StatelessWidget {
     Navigator.pop(context);
   }
 }
- // child: Row(
-              //   children: [
-              //     // Container(
-              //     //   height: 90,
-              //     //   width: 90,
-              //     //   // decoration: BoxDecoration(
-              //     //   //   border: Border.all(color: Colors.black),
-              //     //   // ),
-              //     //   child: const CircleAvatar(
-              //     //     backgroundColor: Colors.grey,
-              //     //     backgroundImage: NetworkImage(
-              //     //         "https://w0.peakpx.com/wallpaper/999/880/HD-wallpaper-eren-yeager-attack-on-titan-shingeki-no-kyojin-manga-mikasa-anime-levi.jpg"),
-              //     //   ),
-              //     // ),
-              //     Row(
-              //       mainAxisAlignment: MainAxisAlignment.start,
-              //       crossAxisAlignment: CrossAxisAlignment.stretch,
-              //       children: [
-              //         Column(
-              //           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              //           crossAxisAlignment: CrossAxisAlignment.start,
-              //           children: [
-              //             Text(
-              //               "Name",
-              //               style: Theme.of(context)
-              //                   .textTheme
-              //                   .bodyMedium!
-              //                   .copyWith(fontSize: 18),
-              //             ),
-              //             // Text(
-              //             //   "email",
-              //             //   style: Theme.of(context)
-              //             //       .textTheme
-              //             //       .bodyMedium!
-              //             //       .copyWith(fontSize: 18),
-              //             // ),
-              //             Text(
-              //               "Houses",
-              //               style: Theme.of(context)
-              //                   .textTheme
-              //                   .bodyMedium!
-              //                   .copyWith(fontSize: 18),
-              //             ),
-              //             Text(
-              //               "Next Bill",
-              //               style: Theme.of(context)
-              //                   .textTheme
-              //                   .bodyMedium!
-              //                   .copyWith(fontSize: 18),
-              //             ),
-              //           ],
-              //         ),
-              //         const SizedBox(
-              //           width: 10,
-              //         ),
-              //         Column(
-              //           crossAxisAlignment: CrossAxisAlignment.start,
-              //           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              //           children: [
-              //             Text(
-              //               "ANAND",
-              //               style: Theme.of(context)
-              //                   .textTheme
-              //                   .bodySmall!
-              //                   .copyWith(fontSize: 16),
-              //             ),
-              //             // Text(
-              //             //   "ananddineesh481@gmail.com",
-              //             //   style: Theme.of(context).textTheme.bodySmall,
-              //             // ),
-              //             // Text(
-              //             //   "7010663257",
-              //             //   style: Theme.of(context).textTheme.bodySmall,
-              //             // ),
-              //             Text(
-              //               "32",
-              //               style: Theme.of(context)
-              //                   .textTheme
-              //                   .bodySmall!
-              //                   .copyWith(fontSize: 16),
-              //             ),
-              //             Container(
-              //               width: 100,
-              //               child: Text(
-              //                 "House.no : 404 in 4 days",
-              //                 style: Theme.of(context)
-              //                     .textTheme
-              //                     .bodySmall!
-              //                     .copyWith(fontSize: 16),
-              //                 maxLines: 2,
-              //               ),
-              //             ),
-              //           ],
-              //         )
-              //       ],
-              //     ),
-              //   ],
-              // ),
