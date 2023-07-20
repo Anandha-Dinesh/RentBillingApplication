@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../pages/Configs.dart';
+
 import './detailedViewModal.dart';
 
 import '../dummydata.dart';
@@ -25,16 +25,19 @@ class Renters extends StatelessWidget {
       showDialog(
         context: ctx,
         builder: (ctx) {
-          return Dialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              elevation: 16,
-              insetPadding: EdgeInsets.all(10),
-              backgroundColor: Colors.blue[400],
-              child: DetailedViewModal(
-                index: index,
-              ));
+          return Container(
+            margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+            child: Dialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                elevation: 16,
+                insetPadding: const EdgeInsets.fromLTRB(10, 10, 10, 40),
+                backgroundColor: const Color.fromARGB(255, 240, 235, 235),
+                child: DetailedViewModal(
+                  index: index,
+                )),
+          );
         },
       );
     }
@@ -58,7 +61,7 @@ class Renters extends StatelessWidget {
           color: Colors.amber,
           child: Column(
             children: [
-              Container(
+              SizedBox(
                 width: double.maxFinite,
                 child: Row(
                   mainAxisSize: MainAxisSize.max,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:rentbillingapp/pages/manageUser.dart';
+import 'package:rentbillingapp/pages/new_user.dart';
 import './sidebar_item.dart';
-import '../pages/Configs.dart';
 
 class Sidebar extends StatelessWidget {
   const Sidebar({super.key});
@@ -11,7 +12,7 @@ class Sidebar extends StatelessWidget {
         // padding: EdgeInsets.all(5),
         children: <Widget>[
           DrawerHeader(
-            margin: EdgeInsets.fromLTRB(2, 2, 10, 2),
+            margin: const EdgeInsets.fromLTRB(2, 2, 10, 2),
             decoration: const BoxDecoration(
               color: Colors.blue,
               borderRadius: BorderRadius.all(
@@ -59,17 +60,14 @@ class Sidebar extends StatelessWidget {
               child: Align(
                 alignment: Alignment.bottomLeft,
                 child: ListTile(
-                  leading: Icon(Icons.settings_input_component_rounded),
+                  leading: const Icon(Icons.settings_input_component_rounded),
                   minLeadingWidth: 5,
                   horizontalTitleGap: 5,
                   minVerticalPadding: 0,
                   title: SidebarItem(
                     title: 'Manage People',
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const Configuration()));
+                      Navigator.pushNamed(context, '/manageuser');
                     },
                   ),
                 ),

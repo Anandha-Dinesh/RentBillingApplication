@@ -4,7 +4,7 @@ class SidebarItem extends StatelessWidget {
   final String title;
   final VoidCallback onTap;
 
-  const SidebarItem({required this.title, required this.onTap});
+  const SidebarItem({super.key, required this.title, required this.onTap});
 
   @override
   Widget build(BuildContext context) {

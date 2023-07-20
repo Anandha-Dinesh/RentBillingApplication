@@ -14,6 +14,7 @@ class _DetailedViewModalState extends State<DetailedViewModal> {
   Widget build(BuildContext context) {
     return Container(
       child: ListView(
+        padding: EdgeInsets.all(10),
         shrinkWrap: true,
         children: <Widget>[
           const SizedBox(height: 20),
@@ -45,11 +46,10 @@ class _DetailedViewModalState extends State<DetailedViewModal> {
                         setState(() {});
                       },
                       style: OutlinedButton.styleFrom(
-                        foregroundColor:
-                            Theme.of(context).colorScheme.secondary,
+                        foregroundColor: Theme.of(context).colorScheme.primary,
                         side: BorderSide(
                           width: 1.0,
-                          color: Theme.of(context).colorScheme.secondary,
+                          color: Theme.of(context).colorScheme.primary,
                         ),
                       ),
                       child: const Text("Edit"),
@@ -88,10 +88,10 @@ class _DetailedViewModalState extends State<DetailedViewModal> {
                             onPressed: () {},
                             style: OutlinedButton.styleFrom(
                               foregroundColor:
-                                  Theme.of(context).colorScheme.secondary,
+                                  Theme.of(context).colorScheme.primary,
                               side: BorderSide(
                                 width: 1.0,
-                                color: Theme.of(context).colorScheme.secondary,
+                                color: Theme.of(context).colorScheme.primary,
                               ),
                             ),
                             child: const Text("Save"),

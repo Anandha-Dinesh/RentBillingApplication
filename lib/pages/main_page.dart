@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rentbillingapp/pages/new_user.dart';
 import '../widgets/sidebar.dart';
 import '../widgets/renters.dart';
 
@@ -10,12 +11,16 @@ class MainPage extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           'RentBillingApp',
-          style: Theme.of(context).textTheme.bodyMedium,
+          style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 26),
         ),
         actions: [
           Padding(
-            padding: EdgeInsets.all(5),
-            child: Icon(Icons.add,
+            padding: const EdgeInsets.all(5),
+            child: IconButton(
+                icon: const Icon(Icons.add),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/newuser');
+                },
                 color: Theme.of(context).colorScheme.onBackground),
           ),
         ],
