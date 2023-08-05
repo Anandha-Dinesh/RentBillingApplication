@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rentbillingapp/pages/manageUser.dart';
-import 'package:rentbillingapp/pages/new_user.dart';
+
 import './sidebar_item.dart';
 
 class Sidebar extends StatelessWidget {
@@ -59,17 +58,36 @@ class Sidebar extends StatelessWidget {
               padding: const EdgeInsets.all(10),
               child: Align(
                 alignment: Alignment.bottomLeft,
-                child: ListTile(
-                  leading: const Icon(Icons.settings_input_component_rounded),
-                  minLeadingWidth: 5,
-                  horizontalTitleGap: 5,
-                  minVerticalPadding: 0,
-                  title: SidebarItem(
-                    title: 'Manage People',
-                    onTap: () {
-                      Navigator.pushNamed(context, '/manageuser');
-                    },
-                  ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    ListTile(
+                      leading:
+                          const Icon(Icons.settings_input_component_rounded),
+                      minLeadingWidth: 5,
+                      horizontalTitleGap: 5,
+                      minVerticalPadding: 0,
+                      title: SidebarItem(
+                        title: 'Manage People',
+                        onTap: () {
+                          Navigator.pushNamed(context, '/manageuser');
+                        },
+                      ),
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.logout_outlined),
+                      minLeadingWidth: 5,
+                      horizontalTitleGap: 5,
+                      minVerticalPadding: 0,
+                      title: SidebarItem(
+                        title: 'Log Out',
+                        onTap: () {
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                              '/login', (Route<dynamic> route) => false);
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),

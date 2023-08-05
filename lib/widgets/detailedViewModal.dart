@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import '../dummydata.dart';
+import '../models/renter.dart';
 
 class DetailedViewModal extends StatefulWidget {
-  const DetailedViewModal({super.key, required this.index});
+  const DetailedViewModal(
+      {super.key, required this.index, required this.filteredUsers});
   final int index;
+  final List<Renter> filteredUsers;
 
   @override
   State<DetailedViewModal> createState() => _DetailedViewModalState();
@@ -68,14 +71,15 @@ class _DetailedViewModalState extends State<DetailedViewModal> {
                       child: SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Text(
-                          dummyRenters[widget.index].name,
+                          widget.filteredUsers[widget.index].name,
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                       ),
                     ),
-                    Text(dummyRenters[widget.index].phonenumber),
-                    Text(dummyRenters[widget.index].eBRate),
-                    Text(dummyRenters[widget.index].miscellaneous),
+                    Text(widget.filteredUsers[widget.index].phonenumber),
+                    Text(widget.filteredUsers[widget.index].eBRate.toString()),
+                    Text(widget.filteredUsers[widget.index].miscellaneous
+                        .toString()),
                     const SizedBox(
                       height: 20,
                     ),

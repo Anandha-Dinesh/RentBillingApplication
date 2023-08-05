@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class NewUser extends StatefulWidget {
-  const NewUser({super.key});
+  const NewUser({super.key, required this.userId});
+  final String userId;
 
   @override
   State<NewUser> createState() => _NewUserState();
@@ -10,6 +14,7 @@ class NewUser extends StatefulWidget {
 class _NewUserState extends State<NewUser> {
   final GlobalKey<FormState> _formKey = GlobalKey();
   final TextEditingController _nameFormController = TextEditingController();
+  final TextEditingController _emailFormController = TextEditingController();
   final TextEditingController _phoneFormController = TextEditingController();
   final TextEditingController _rentFormController = TextEditingController();
   final TextEditingController _ebFormController = TextEditingController();
@@ -18,42 +23,39 @@ class _NewUserState extends State<NewUser> {
   final TextEditingController _miscellaneousFormController =
       TextEditingController();
 
-  @override
-  void _dispose() {
-    _nameFormController.dispose();
-    _phoneFormController.dispose();
-    _rentFormController.dispose();
-    _ebFormController.dispose();
-    _lastReadingFormController.dispose();
-    _miscellaneousFormController.dispose();
-    super.dispose();
-  }
-
-  void _clearFormFields() {
-    _formKey.currentState!.reset();
-    _nameFormController.clear();
-    _phoneFormController.clear();
-    _rentFormController.clear();
-    _ebFormController.clear();
-    _lastReadingFormController.clear();
-    _miscellaneousFormController.clear();
-  }
-
-  void validateData() {
-    if (_nameFormController.text.isNotEmpty &&
-        _phoneFormController.text.isNotEmpty &&
-        _rentFormController.text.isNotEmpty &&
-        _ebFormController.text.isNotEmpty &&
-        _lastReadingFormController.text.isNotEmpty &&
-        _miscellaneousFormController.text.isNotEmpty) {
-      //send data to backend
-    } else {
-      _nameFormController.text = "";
-      _phoneFormController.text = "";
-      _rentFormController.text = "";
-      _ebFormController.text = "";
-      _lastReadingFormController.text = "";
-      _miscellaneousFormController.text = "";
+  _addUsers(
+    name,
+    email,
+    phone,
+    rent,
+    ebcharge,
+    lastreading,
+    miscellaneous,
+  ) async {
+    final url = Uri.http(dotenv.env['URL'].toString(), '/api/addRenter');
+    try {
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': "application/json"},
+        body: json.encode(
+          {
+            "renter_name": name,
+            "email": email,
+            "phonenumber": phone,
+            "landlord_id": widget.userId,
+            "rent": rent,
+            "EBcharge": ebcharge,
+            "currentReading": lastreading,
+            "miscellaneous": miscellaneous
+          },
+        ),
+      );
+      if (response.statusCode == 20) {
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil('/home', (Route<dynamic> route) => false);
+      }
+    } catch (e) {
+      print(e);
     }
   }
 
@@ -88,14 +90,14 @@ class _NewUserState extends State<NewUser> {
                     isDense: true,
                     contentPadding: EdgeInsets.all(0),
                   ),
+                  controller: _nameFormController,
                   validator: (value) {
-                    if (value!.isEmpty) {
-                      return "Please Enter some data";
+                    if (_nameFormController.text.isEmpty) {
+                      return "Please enter some name";
                     } else {
                       return null;
                     }
                   },
-                  controller: _nameFormController,
                 ),
                 const Text("Phone :"),
                 TextFormField(
@@ -103,14 +105,29 @@ class _NewUserState extends State<NewUser> {
                     isDense: true,
                     contentPadding: EdgeInsets.all(0),
                   ),
+                  controller: _phoneFormController,
                   validator: (value) {
-                    if (value!.isEmpty) {
+                    if (_phoneFormController.text.isEmpty) {
                       return "Please Enter some data";
                     } else {
                       return null;
                     }
                   },
-                  controller: _phoneFormController,
+                ),
+                const Text("Email :"),
+                TextFormField(
+                  decoration: const InputDecoration(
+                    isDense: true,
+                    contentPadding: EdgeInsets.all(0),
+                  ),
+                  controller: _emailFormController,
+                  validator: (value) {
+                    if (_emailFormController.text.isEmpty) {
+                      return "Please Enter some Email";
+                    } else {
+                      return null;
+                    }
+                  },
                 ),
                 const Text("Rent :"),
                 TextFormField(
@@ -118,14 +135,14 @@ class _NewUserState extends State<NewUser> {
                     isDense: true,
                     contentPadding: EdgeInsets.all(0),
                   ),
+                  controller: _rentFormController,
                   validator: (value) {
-                    if (value!.isEmpty) {
+                    if (_rentFormController.text.isEmpty) {
                       return "Please Enter some data";
                     } else {
                       return null;
                     }
                   },
-                  controller: _rentFormController,
                 ),
                 const Text("Amount/Unit :"),
                 TextFormField(
@@ -133,14 +150,14 @@ class _NewUserState extends State<NewUser> {
                     isDense: true,
                     contentPadding: EdgeInsets.all(0),
                   ),
+                  controller: _ebFormController,
                   validator: (value) {
-                    if (value!.isEmpty) {
+                    if (_ebFormController.text.isEmpty) {
                       return "Please Enter some data";
                     } else {
                       return null;
                     }
                   },
-                  controller: _ebFormController,
                 ),
                 const Text("Last Reading :"),
                 TextFormField(
@@ -148,14 +165,14 @@ class _NewUserState extends State<NewUser> {
                     isDense: true,
                     contentPadding: EdgeInsets.all(0),
                   ),
+                  controller: _lastReadingFormController,
                   validator: (value) {
-                    if (value!.isEmpty) {
+                    if (_lastReadingFormController.text.isEmpty) {
                       return "Please Enter some data";
                     } else {
                       return null;
                     }
                   },
-                  controller: _lastReadingFormController,
                 ),
                 const Text("Miscellaneous :"),
                 TextFormField(
@@ -163,14 +180,14 @@ class _NewUserState extends State<NewUser> {
                     isDense: true,
                     contentPadding: EdgeInsets.all(0),
                   ),
+                  controller: _miscellaneousFormController,
                   validator: (value) {
-                    if (value!.isEmpty) {
+                    if (_miscellaneousFormController.text.isEmpty) {
                       return "Please Enter some data";
                     } else {
                       return null;
                     }
                   },
-                  controller: _miscellaneousFormController,
                 ),
                 Center(
                   child: SizedBox(
@@ -178,7 +195,7 @@ class _NewUserState extends State<NewUser> {
                     height: 45,
                     child: ElevatedButton(
                       onPressed: () {
-                        _clearFormFields();
+                        _formKey.currentState!.reset();
                       },
                       child: const Text(
                         "Reset",
@@ -192,7 +209,18 @@ class _NewUserState extends State<NewUser> {
                     height: 45,
                     child: ElevatedButton(
                       onPressed: () {
-                        validateData();
+                        if (_formKey.currentState!.validate()) {
+                          _formKey.currentState!.save();
+                          _addUsers(
+                            _nameFormController.text,
+                            _emailFormController.text,
+                            _phoneFormController.text,
+                            _rentFormController.text,
+                            _ebFormController.text,
+                            _lastReadingFormController.text,
+                            _miscellaneousFormController.text,
+                          );
+                        }
                       },
                       child: const Text(
                         "ADD",

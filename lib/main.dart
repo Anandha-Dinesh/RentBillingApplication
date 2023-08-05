@@ -5,7 +5,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:rentbillingapp/pages/login_page.dart';
 import 'package:rentbillingapp/pages/main_page.dart';
 import 'package:rentbillingapp/pages/manageUser.dart';
-import 'package:rentbillingapp/pages/new_user.dart';
 
 Future main() async {
   await dotenv.load(fileName: ".env");
@@ -22,17 +21,18 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
         colorScheme: const ColorScheme(
-            brightness: Brightness.light,
-            primary: Colors.blue,
-            onPrimary: Color.fromARGB(255, 255, 255, 255),
-            secondary: Colors.amber,
-            onSecondary: Colors.amber,
-            error: Colors.red,
-            onError: Color.fromARGB(255, 238, 54, 54),
-            background: Color.fromARGB(255, 0, 0, 0),
-            onBackground: Colors.white,
-            surface: Colors.yellow,
-            onSurface: Colors.teal),
+          brightness: Brightness.light,
+          primary: Colors.blue,
+          onPrimary: Color.fromARGB(255, 255, 255, 255),
+          secondary: Colors.amber,
+          onSecondary: Colors.amber,
+          error: Colors.red,
+          onError: Color.fromARGB(255, 238, 54, 54),
+          background: Color.fromARGB(255, 0, 0, 0),
+          onBackground: Colors.white,
+          surface: Colors.yellow,
+          onSurface: Colors.teal,
+        ),
         fontFamily: GoogleFonts.asul().fontFamily,
         textTheme: const TextTheme(
           bodyLarge: TextStyle(
@@ -55,15 +55,21 @@ class MyApp extends StatelessWidget {
             fontWeight: FontWeight.w500,
           ),
         ),
-        // buttonTheme: ButtonThemeData(disabledColor: Colors.grey,textTheme: )
       ),
       home: LoginPage(),
       routes: {
-        '/home': (context) => const MainPage(),
         '/login': (context) => LoginPage(),
         '/signup': (context) => SignupPage(),
-        '/newuser': (context) => const NewUser(),
         '/manageuser': ((context) => const ManageUser())
+      },
+      onGenerateRoute: (RouteSettings settings) {
+        // Handle named routes that are not defined in 'routes' here
+        if (settings.name == '/home') {
+          final String userId = settings.arguments as String;
+          return MaterialPageRoute(
+            builder: (context) => MainPage(userId: userId),
+          );
+        }
       },
     );
   }
