@@ -1,14 +1,55 @@
 import 'package:flutter/material.dart';
-import 'package:rentbillingapp/dummydata.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+import 'package:rentbillingapp/pages/new_user.dart';
+import '../models/renter.dart';
 
 class ManageUser extends StatefulWidget {
-  const ManageUser({super.key});
+  ManageUser({
+    super.key,
+    required this.userId,
+    required this.filteredUsers,
+  });
+  final String userId;
+  late List<Renter> filteredUsers;
 
   @override
   State<ManageUser> createState() => _ManageUserState();
 }
 
 class _ManageUserState extends State<ManageUser> {
+  void _deleteUser(userId, renterId) async {
+    final url = Uri.http(dotenv.env['URL'].toString(), '/api/deleteUser');
+    try {
+      final response = await http.post(
+        url,
+        headers: {'Content-type': 'application/json'},
+        body: json.encode(
+          {
+            "landlordId": userId,
+            "renterId": renterId,
+          },
+        ),
+      );
+      if (response.statusCode == 200) {
+        widget.filteredUsers
+            .removeWhere((element) => element.renterId == renterId);
+        Navigator.pop(context);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ManageUser(
+                userId: widget.userId, filteredUsers: widget.filteredUsers),
+          ),
+        );
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +63,7 @@ class _ManageUserState extends State<ManageUser> {
         ),
       ),
       body: ListView.builder(
-        itemCount: dummyRenters.length,
+        itemCount: widget.filteredUsers.length,
         itemBuilder: (ctx, index) {
           return Card(
               color: Theme.of(context).colorScheme.onSecondary,
@@ -35,11 +76,11 @@ class _ManageUserState extends State<ManageUser> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(dummyRenters[index].name),
+                        Text(widget.filteredUsers[index].name),
                         const SizedBox(
                           height: 10,
                         ),
-                        Text(dummyRenters[index].phonenumber)
+                        Text(widget.filteredUsers[index].phonenumber)
                       ],
                     ),
                     Expanded(
@@ -49,7 +90,10 @@ class _ManageUserState extends State<ManageUser> {
                         icon: const Icon(
                           Icons.delete_outline_outlined,
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          _deleteUser(widget.userId,
+                              widget.filteredUsers[index].renterId);
+                        },
                       ),
                     )),
                     // const SizedBox(
@@ -72,10 +116,21 @@ class _ManageUserState extends State<ManageUser> {
             Navigator.pushNamed(context, '/newuser');
           },
           backgroundColor: Colors.lightGreen[400],
-          child: Text(
-            "Add",
-            style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-          ),
+          child: InkWell(
+              child: Text(
+                "Add",
+                style:
+                    TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+              ),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => NewUser(
+                          userId: widget.userId,
+                          filteredUsers: widget.filteredUsers),
+                    ));
+              }),
         ),
       ),
     );

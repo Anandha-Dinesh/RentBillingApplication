@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 
 import './sidebar_item.dart';
+import '../pages/manageUser.dart';
+import '../models/renter.dart';
 
 class Sidebar extends StatelessWidget {
-  const Sidebar({super.key});
+  final userId;
+  final List<Renter> filteredUsers;
+  const Sidebar({
+    super.key,
+    required this.userId,
+    required this.filteredUsers,
+  });
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -70,7 +78,16 @@ class Sidebar extends StatelessWidget {
                       title: SidebarItem(
                         title: 'Manage People',
                         onTap: () {
-                          Navigator.pushNamed(context, '/manageuser');
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: ((context) => ManageUser(
+                                    userId: userId,
+                                    filteredUsers: filteredUsers,
+                                  )),
+                            ),
+                          );
                         },
                       ),
                     ),

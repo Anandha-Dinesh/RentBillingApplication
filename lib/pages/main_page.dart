@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 import '../models/renter.dart';
 import '../widgets/detailedViewModal.dart';
 import '../widgets/sidebar.dart';
-import 'new_user.dart';
+import './new_user.dart';
 
 class MainPage extends StatefulWidget {
   MainPage({super.key, required this.userId});
@@ -23,6 +23,8 @@ class _MainPageState extends State<MainPage> {
   List<Renter> _filteredUsers = [];
   late Future<List<Renter>> _loadState;
   late String _userId;
+  final TextEditingController _currentreadingcontroller =
+      TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -66,6 +68,17 @@ class _MainPageState extends State<MainPage> {
     return filteredUsers;
   }
 
+  billamount(currentReading, renterId, userId) async {
+    final url = Uri.http(dotenv.env['Url'].toString(), '/api/generateBill');
+    final response = await http.post(url,
+        headers: {'Content-Type': 'appliction/json'},
+        body: json.encode({
+          "currentReading": currentReading,
+          "renterId": renterId,
+          "landlordId": userId,
+        }));
+  }
+
   Widget build(BuildContext context) {
     int _totalAmount(int rent, int currentReading, int lastReading,
         int miscellaneous, int amountPerUnit) {
@@ -102,6 +115,72 @@ class _MainPageState extends State<MainPage> {
       );
     }
 
+    void _bill(BuildContext ctx, int index) {
+      showDialog(
+        context: ctx,
+        builder: (ctx) {
+          return Container(
+            margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+            child: Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              elevation: 16,
+              insetPadding: const EdgeInsets.fromLTRB(10, 10, 10, 40),
+              backgroundColor: const Color.fromARGB(255, 240, 235, 235),
+              child: SizedBox(
+                height: 200,
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Column(
+                    children: [
+                      const Center(
+                        child: Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: Text(
+                            "Bill",
+                            style: TextStyle(
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(25, 10, 25, 15),
+                        child: TextField(
+                          controller: _currentreadingcontroller,
+                          decoration: const InputDecoration(
+                              hintText: ("Enter current Reading")),
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: OutlinedButton(
+                          onPressed: () {
+                            billamount(_currentreadingcontroller.text,
+                                filteredUsers[index].renterId, widget.userId);
+                          },
+                          style: OutlinedButton.styleFrom(
+                            foregroundColor:
+                                Theme.of(context).colorScheme.primary,
+                            side: BorderSide(
+                              width: 1.0,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
+                          child: const Text("Bill"),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
+      );
+    }
+
     Widget content = ListView.builder(
       itemCount: filteredUsers.length,
       itemBuilder: (ctx, index) => Container(
@@ -131,7 +210,7 @@ class _MainPageState extends State<MainPage> {
                       width: 130,
                       child: CircleAvatar(
                         backgroundImage: NetworkImage(
-                            "https://w0.peakpx.com/wallpaper/999/880/HD-wallpaper-eren-yeager-attack-on-titan-shingeki-no-kyojin-manga-mikasa-anime-levi.jpg"),
+                            "https://cdn.pixabay.com/photo/2021/07/02/04/48/user-6380868_960_720.png"),
                       ),
                     ),
                     Column(
@@ -250,7 +329,9 @@ class _MainPageState extends State<MainPage> {
                                 padding: const EdgeInsets.fromLTRB(0, 0, 20, 5),
                                 child: InkWell(
                                   child: OutlinedButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      _bill(ctx, index);
+                                    },
                                     child: const Text("Bill"),
                                   ),
                                 ),
@@ -297,11 +378,13 @@ class _MainPageState extends State<MainPage> {
               child: IconButton(
                 icon: const Icon(Icons.add),
                 onPressed: () {
+                  Navigator.pop(context);
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => NewUser(
                           userId: _userId,
+                          filteredUsers: filteredUsers,
                         ),
                       ));
                 },
@@ -310,7 +393,10 @@ class _MainPageState extends State<MainPage> {
             ),
           ],
         ),
-        drawer: const Sidebar(),
+        drawer: Sidebar(
+          userId: _userId,
+          filteredUsers: filteredUsers,
+        ),
         backgroundColor: Theme.of(context).colorScheme.onBackground,
         body: FutureBuilder(
             future: _loadState,

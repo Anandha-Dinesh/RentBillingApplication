@@ -3,9 +3,13 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:rentbillingapp/pages/main_page.dart';
+import '../models/renter.dart';
+
 class NewUser extends StatefulWidget {
-  const NewUser({super.key, required this.userId});
+  NewUser({super.key, required this.userId, required this.filteredUsers});
   final String userId;
+  List<Renter> filteredUsers;
 
   @override
   State<NewUser> createState() => _NewUserState();
@@ -22,11 +26,13 @@ class _NewUserState extends State<NewUser> {
       TextEditingController();
   final TextEditingController _miscellaneousFormController =
       TextEditingController();
+  final TextEditingController _houseIdFormController = TextEditingController();
 
   _addUsers(
     name,
     email,
     phone,
+    houseId,
     rent,
     ebcharge,
     lastreading,
@@ -42,6 +48,7 @@ class _NewUserState extends State<NewUser> {
             "renter_name": name,
             "email": email,
             "phonenumber": phone,
+            "houseId": houseId,
             "landlord_id": widget.userId,
             "rent": rent,
             "EBcharge": ebcharge,
@@ -50,7 +57,7 @@ class _NewUserState extends State<NewUser> {
           },
         ),
       );
-      if (response.statusCode == 20) {
+      if (response.statusCode == 200) {
         Navigator.of(context)
             .pushNamedAndRemoveUntil('/home', (Route<dynamic> route) => false);
       }
@@ -75,7 +82,7 @@ class _NewUserState extends State<NewUser> {
       body: Form(
         key: _formKey,
         child: SizedBox(
-          height: size.height,
+          height: size.height - 20,
           child: Padding(
             padding: const EdgeInsets.all(40),
             child: GridView.count(
@@ -124,6 +131,21 @@ class _NewUserState extends State<NewUser> {
                   validator: (value) {
                     if (_emailFormController.text.isEmpty) {
                       return "Please Enter some Email";
+                    } else {
+                      return null;
+                    }
+                  },
+                ),
+                const Text("HouseId :"),
+                TextFormField(
+                  decoration: const InputDecoration(
+                    isDense: true,
+                    contentPadding: EdgeInsets.all(0),
+                  ),
+                  controller: _houseIdFormController,
+                  validator: (value) {
+                    if (_houseIdFormController.text.isEmpty) {
+                      return "Please Enter houseId";
                     } else {
                       return null;
                     }
@@ -196,6 +218,14 @@ class _NewUserState extends State<NewUser> {
                     child: ElevatedButton(
                       onPressed: () {
                         _formKey.currentState!.reset();
+                        _nameFormController.clear();
+                        _emailFormController.clear();
+                        _phoneFormController.clear();
+                        _rentFormController.clear();
+                        _ebFormController.clear();
+                        _lastReadingFormController.clear();
+                        _miscellaneousFormController.clear();
+                        _houseIdFormController.clear();
                       },
                       child: const Text(
                         "Reset",
@@ -208,19 +238,27 @@ class _NewUserState extends State<NewUser> {
                     width: 80,
                     height: 45,
                     child: ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if (_formKey.currentState!.validate()) {
                           _formKey.currentState!.save();
-                          _addUsers(
+                          await _addUsers(
                             _nameFormController.text,
                             _emailFormController.text,
                             _phoneFormController.text,
+                            _houseIdFormController.text,
                             _rentFormController.text,
                             _ebFormController.text,
                             _lastReadingFormController.text,
                             _miscellaneousFormController.text,
                           );
                         }
+                        Navigator.pop(context);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  MainPage(userId: widget.userId),
+                            ));
                       },
                       child: const Text(
                         "ADD",

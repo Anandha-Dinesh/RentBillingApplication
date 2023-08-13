@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../dummydata.dart';
 import '../models/renter.dart';
 
 class DetailedViewModal extends StatefulWidget {
@@ -15,6 +14,7 @@ class DetailedViewModal extends StatefulWidget {
 class _DetailedViewModalState extends State<DetailedViewModal> {
   @override
   Widget build(BuildContext context) {
+    bool isEdit = false;
     return Container(
       child: ListView(
         padding: EdgeInsets.all(10),
@@ -46,7 +46,9 @@ class _DetailedViewModalState extends State<DetailedViewModal> {
                     ),
                     OutlinedButton(
                       onPressed: () {
-                        setState(() {});
+                        setState(() {
+                          isEdit = true;
+                        });
                       },
                       style: OutlinedButton.styleFrom(
                         foregroundColor: Theme.of(context).colorScheme.primary,

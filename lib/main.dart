@@ -60,7 +60,6 @@ class MyApp extends StatelessWidget {
       routes: {
         '/login': (context) => LoginPage(),
         '/signup': (context) => SignupPage(),
-        '/manageuser': ((context) => const ManageUser())
       },
       onGenerateRoute: (RouteSettings settings) {
         // Handle named routes that are not defined in 'routes' here
@@ -70,6 +69,7 @@ class MyApp extends StatelessWidget {
             builder: (context) => MainPage(userId: userId),
           );
         }
+        return null;
       },
     );
   }
