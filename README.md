@@ -1,6 +1,13 @@
 # rentbillingapp
 
-A new Flutter project.
+A mobile Application can be used by landlord for managing the rent from the renters 
+and also send bills through the sms to their corresponding mobile number.
+
+# Technologies used
+
+The app uses Flutter to create friendly user experience and responsive design.
+
+The app uses Node.js with express.js and Mysql as backend to provide api services and managing the database.
 
 ## Getting Started
 
